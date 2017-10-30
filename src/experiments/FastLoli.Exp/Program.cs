@@ -26,6 +26,7 @@ namespace FastLoli.Exp
         }
 
         Dictionary<CommandDesc, Action> Commands;
+        bool programOn = true;
 
         public Program()
         {
@@ -35,10 +36,18 @@ namespace FastLoli.Exp
                     new CommandDesc("help", "Show helps"),
                     ()=>
                     {
+                        Console.WriteLine("FastLoli's Playground \n");
                         foreach (var item in Commands)
                         {
                             Console.WriteLine($"{item.Key.Key.PadRight(12)} {item.Key.Describe}");
 	                    }
+                    }
+                },
+                {
+                    new CommandDesc("exit", "Exit program"),
+                    () =>
+                    {
+                        programOn = false;
                     }
                 },
                 {
@@ -53,7 +62,19 @@ namespace FastLoli.Exp
 
         public void Run()
         {
-
+            while (programOn)
+            {
+                Console.Write(">>> ");
+                var read = Console.ReadLine();
+                read = read.ToLower().Trim();
+                foreach (var item in Commands)
+                {
+                    if(item.Key.Key == read)
+                    {
+                        item.Value.Invoke();
+                    }
+                }
+            }
         }
     }
 }
