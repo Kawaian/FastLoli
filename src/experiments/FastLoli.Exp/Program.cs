@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CNTK;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,6 +27,7 @@ namespace FastLoli.Exp
         }
 
         Dictionary<CommandDesc, Action> Commands;
+        DeviceDescriptor device = DeviceDescriptor.CPUDevice;
         bool programOn = true;
 
         public Program()
@@ -54,7 +56,7 @@ namespace FastLoli.Exp
                     new CommandDesc("mnist", "Run CNTK's mnist sample"),
                     () =>
                     {
-                        
+                        MNISTClassifier.TrainAndEvaluate(device, true, true);
                     }
                 }
             };
@@ -72,6 +74,7 @@ namespace FastLoli.Exp
                     if(item.Key.Key == read)
                     {
                         item.Value.Invoke();
+                        break;
                     }
                 }
             }
